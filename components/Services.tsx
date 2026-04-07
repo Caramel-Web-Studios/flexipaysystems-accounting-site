@@ -12,14 +12,14 @@ export default function Services() {
       <div className="grid md:grid-cols-3 gap-8">
         <ServiceCard 
           icon={<PieChart size={32} />}
-          title="Monthly Books"
-          desc="Clean, HMRC-compliant records delivered like clockwork."
+          title="Payroll Management"
+          desc="At FlexiPay, we offer reliable and fully managed payroll services to ensure your employees are paid accurately and on time, every time. From payslip generation and HMRC submissions to pension contributions and year-end reports, we handle it all—so you don’t have to."
           delay={0.1}
         />
         <ServiceCard 
           icon={<ShieldCheck size={32} />}
-          title="Tax Strategy"
-          desc="Proactive planning to keep more of your hard-earned revenue."
+          title="Bookkeeping"
+          desc="At FlexiPay, we take the stress out of managing your day-to-day finances. Our bookkeeping services are designed to keep your records accurate, organized, and up to date—giving you complete visibility over your business’s finances."
           delay={0.2}
         />
         <ServiceCard 

@@ -1,27 +1,28 @@
-"use client";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header";
 import Footer from "@/components/Footer";
-import { motion, AnimatePresence } from "framer-motion";
+import ClientWrapper from "../components/ClientWrapper"; // Import the wrapper
+import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
+// --- THIS IS WHERE YOU ADD THE TITLE ---
+export const metadata: Metadata = {
+  title: "FlexiPay Systems | Automated UK Payroll & Finance",
+  description: "Advanced financial systems and automated payroll for UK founders and business owners.",
+  metadataBase: new URL('https://flexipaysystems.com'),
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en-GB" className="scroll-smooth">
       <body className={inter.className}>
         <Header />
-        <AnimatePresence mode="wait">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
+        {/* Wrap children in the client-side animation component */}
+        <ClientWrapper>
+          {children}
+        </ClientWrapper>
         <Footer />
       </body>
     </html>

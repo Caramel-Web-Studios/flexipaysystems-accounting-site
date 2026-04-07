@@ -1,19 +1,20 @@
 @import "tailwindcss";
 @theme {
-  /* Define your "Accounting" Brand Colors */
-  --color-brand-navy: #0f172a;
-  --color-brand-gold: #c5a47e;
-  --color-brand-slate: #1e293b;
-  --color-brand-light: #f8fafc;
+  /* FlexiPay Systems - Brand Palette */
+  --color-brand-primary: #19757e;   /* Teal - Use for Headers/Nav */
+  --color-brand-surface: #e2e2e2;   /* Light Grey - Use for Section Backgrounds */
+  --color-brand-text: #003366;      /* Dark Navy - Use for All Primary Text */
   
-  /* You can also define custom spacing or fonts here */
-  --font-sans: "Inter", ui-sans-serif, system-ui;
+  /* Additional Utility Colors based on your set */
+  --color-brand-accent: #15666e;    /* A slightly darker Teal for button hovers */
+  --color-brand-muted: #4d7a8a;     /* Muted Teal for subtext */
 }
 
 /* Base styles for the whole site */
 :root {
-  background-color: var(--color-brand-light);
-  color: var(--color-brand-navy);
+  background-color: var(--color-brand-surface);
+  color: var(--color-brand-text);
+  font-family: var(--font-sans);
 }
 
 body {

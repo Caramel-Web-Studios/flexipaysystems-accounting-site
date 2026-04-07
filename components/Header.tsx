@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Calculator, ChevronDown, Menu, X, Lock } from 'lucide-react';
+import { ShieldCheck, ChevronDown, Menu, X, Lock } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Header() {
@@ -15,7 +15,7 @@ export default function Header() {
     { name: 'Contact Us', href: '/#contact' },
   ];
 
-  // UK Calculator Sub-menu Links (Matching your new component IDs)
+  // UK Calculator Sub-menu Links
   const calculatorLinks = [
     { name: 'Salary Estimator', href: '/#salary-calc' },
     { name: 'ROI Tracker', href: '/#roi-calc' },
@@ -23,13 +23,16 @@ export default function Header() {
   ];
 
   return (
-    <nav className="bg-white border-b border-brand-navy/5 sticky top-0 z-50 font-sans">
+    /* Background remains white for clarity, border uses your Navy #003366 at low opacity */
+    <nav className="bg-white border-b border-brand-text/5 sticky top-0 z-50 font-sans">
       <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
         
-        {/* --- LOGO --- */}
-        <Link href="/" className="flex items-center gap-2 font-black text-brand-navy tracking-tighter text-xl">
-          <Calculator className="text-brand-gold w-6 h-6" />
-          <span>YOURNAME<span className="text-brand-gold font-light">CPA</span></span>
+        {/* --- LOGO (Replaced Calculator with ShieldCheck for "Systems" feel) --- */}
+        <Link href="/" className="flex items-center gap-2 font-black text-brand-text tracking-tighter text-2xl group">
+          <div className="bg-brand-primary p-1.5 rounded-lg group-hover:bg-brand-text transition-colors">
+            <ShieldCheck className="text-white w-6 h-6" />
+          </div>
+          <span className="text-brand-text uppercase">FlexiPay<span className="text-brand-primary font-light">Systems</span></span>
         </Link>
 
         {/* --- DESKTOP MENU --- */}
@@ -38,7 +41,7 @@ export default function Header() {
             <Link 
               key={link.name} 
               href={link.href} 
-              className="text-brand-navy hover:text-brand-gold transition-colors duration-200"
+              className="text-brand-text hover:text-brand-primary transition-colors duration-200"
             >
               {link.name}
             </Link>
@@ -50,19 +53,19 @@ export default function Header() {
             onMouseEnter={() => setIsCalcOpen(true)}
             onMouseLeave={() => setIsCalcOpen(false)}
           >
-            <button className="flex items-center gap-1 text-brand-navy group-hover:text-brand-gold transition-colors cursor-pointer uppercase">
+            <button className="flex items-center gap-1 text-brand-text group-hover:text-brand-primary transition-colors cursor-pointer uppercase">
               Calculators 
               <ChevronDown size={12} className={`transition-transform duration-300 ${isCalcOpen ? 'rotate-180' : ''}`} />
             </button>
             
             {/* Dropdown Panel */}
-            <div className={`absolute top-full -left-4 w-60 bg-white border border-brand-navy/5 shadow-2xl rounded-2xl py-3 transition-all duration-300 ${isCalcOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
+            <div className={`absolute top-full -left-4 w-60 bg-white border border-brand-text/5 shadow-2xl rounded-2xl py-3 transition-all duration-300 ${isCalcOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
               {calculatorLinks.map((calc) => (
                 <Link 
                   key={calc.name} 
                   href={calc.href} 
                   onClick={() => setIsCalcOpen(false)}
-                  className="block px-6 py-3 text-[10px] font-black text-brand-navy hover:bg-brand-light hover:text-brand-gold transition-colors uppercase tracking-widest"
+                  className="block px-6 py-3 text-[10px] font-black text-brand-text hover:bg-brand-surface hover:text-brand-primary transition-colors uppercase tracking-widest"
                 >
                   {calc.name}
                 </Link>
@@ -70,20 +73,20 @@ export default function Header() {
             </div>
           </div>
           
-          {/* CLIENT LOGIN BUTTON */}
+          {/* CLIENT LOGIN BUTTON (Navy #003366 background, Teal hover) */}
           <Link 
-            href="https://portal.yourname.com" 
+            href="https://portal.flexipaysystems.com" 
             target="_blank"
-            className="flex items-center gap-2 bg-brand-navy text-white px-6 py-3 rounded-full hover:bg-brand-gold hover:text-brand-navy transition-all duration-300 shadow-lg shadow-brand-navy/10 hover:-translate-y-0.5"
+            className="flex items-center gap-2 bg-brand-text text-white px-6 py-3 rounded-full hover:bg-brand-primary transition-all duration-300 shadow-lg shadow-brand-text/10 hover:-translate-y-0.5"
           >
             <Lock size={12} /> 
-            <span className="mt-0.5">Client Login</span>
+            <span className="mt-0.5">Portal Login</span>
           </Link>
         </div>
 
         {/* --- MOBILE TOGGLE --- */}
         <button 
-          className="md:hidden text-brand-navy p-2 hover:bg-brand-light rounded-lg transition-colors" 
+          className="md:hidden text-brand-text p-2 hover:bg-brand-surface rounded-lg transition-colors" 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle Menu"
         >
@@ -93,26 +96,26 @@ export default function Header() {
 
       {/* --- MOBILE MENU PANEL --- */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-brand-navy/5 fixed inset-x-0 top-20 bottom-0 z-40 p-8 flex flex-col gap-8 animate-in fade-in slide-in-from-top-4 overflow-y-auto">
+        <div className="md:hidden bg-brand-surface fixed inset-x-0 top-20 bottom-0 z-40 p-8 flex flex-col gap-8 animate-in fade-in slide-in-from-top-4 overflow-y-auto">
           {navLinks.map((link) => (
             <Link 
               key={link.name} 
               href={link.href} 
-              className="text-3xl font-black text-brand-navy active:text-brand-gold" 
+              className="text-3xl font-black text-brand-text active:text-brand-primary" 
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
             </Link>
           ))}
           
-          <div className="space-y-6 pt-4 border-t border-brand-navy/5">
-            <p className="text-brand-gold font-black uppercase tracking-[0.3em] text-[10px]">Calculators</p>
-            <div className="grid gap-6 pl-4 border-l-2 border-brand-gold/20">
+          <div className="space-y-6 pt-4 border-t border-brand-text/10">
+            <p className="text-brand-primary font-black uppercase tracking-[0.3em] text-[10px]">Calculators</p>
+            <div className="grid gap-6 pl-4 border-l-2 border-brand-primary/20">
               {calculatorLinks.map((calc) => (
                 <Link 
                   key={calc.name} 
                   href={calc.href} 
-                  className="text-xl font-bold text-brand-slate hover:text-brand-navy" 
+                  className="text-xl font-bold text-brand-text hover:text-brand-primary" 
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {calc.name}
@@ -122,8 +125,8 @@ export default function Header() {
           </div>
 
           <Link 
-            href="https://portal.yourname.com" 
-            className="mt-auto bg-brand-navy text-white p-6 rounded-2xl text-center font-black flex justify-center items-center gap-3 shadow-xl active:scale-95 transition-transform"
+            href="https://portal.flexipaysystems.com" 
+            className="mt-auto bg-brand-text text-white p-6 rounded-2xl text-center font-black flex justify-center items-center gap-3 shadow-xl active:scale-95 transition-transform"
           >
             <Lock size={20} /> Client Login
           </Link>
