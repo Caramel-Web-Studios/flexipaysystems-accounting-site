@@ -1,6 +1,5 @@
-"use client";
 
-import { use } from "react";
+
 import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
 import Link from "next/link";
@@ -8,16 +7,18 @@ import Image from "next/image";
 
 // 1. Explicitly define the types for Next.js 15 params
 type PageProps = {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 };
 
 export default function ArticlePage({ params }: PageProps) {
   // 2. Unwrap the promise using 'use'
-  const resolvedParams = use(params);
+  
   
   // 3. Extract the slug and create the display title
-  const currentSlug = resolvedParams.slug;
-  const displayTitle = currentSlug.replace(/-/g, " ");
+ 
+ const displayTitle = params.slug
+  ?.replace(/-/g, " ")
+  .replace(/\b\w/g, (c) => c.toUpperCase()) ?? "Article";
 
   return (
     <main className="min-h-screen bg-white pb-20">
