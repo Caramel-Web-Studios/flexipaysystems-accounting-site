@@ -1,14 +1,23 @@
 "use client";
+
+import { use } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react"; // Share2 now used
+import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
-// We use the 'params' to identify which article the user clicked
-export default function ArticlePage({ params }: { params: { slug: string } }) {
+// 1. Explicitly define the types for Next.js 15 params
+type PageProps = {
+  params: Promise<{ slug: string }>;
+};
+
+export default function ArticlePage({ params }: PageProps) {
+  // 2. Unwrap the promise using 'use'
+  const resolvedParams = use(params);
   
-  // Helper to turn the URL slug back into a readable title for the header
-  const displayTitle = params.slug.replace(/-/g, ' ');
+  // 3. Extract the slug and create the display title
+  const currentSlug = resolvedParams.slug;
+  const displayTitle = currentSlug.replace(/-/g, " ");
 
   return (
     <main className="min-h-screen bg-white pb-20">
@@ -30,7 +39,6 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
               <ArrowLeft size={14} /> Back to Insights
             </Link>
             
-            {/* Using the Share2 icon here to fix the ESLint error */}
             <button className="text-white/40 hover:text-brand-primary transition-colors">
               <Share2 size={18} />
             </button>
@@ -47,7 +55,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
               <span className="text-brand-primary">Corporate Update</span>
             </div>
             
-            {/* Using params.slug here to fix the ESLint error */}
+            {/* 4. Use displayTitle here to clear the 'unused' error */}
             <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter leading-tight">
               {displayTitle}
             </h1>
@@ -66,13 +74,6 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
             <p className="text-brand-text/60 leading-relaxed mb-6">
               As FlexiPay Systems continues to monitor UK fiscal policy, we ensure our clients remain ahead of regulatory shifts. This specific update addresses the operational requirements for modern Ltd companies.
             </p>
-
-            <div className="bg-brand-surface p-8 rounded-2xl border-l-4 border-brand-primary my-10">
-              <p className="text-brand-text font-bold uppercase text-xs tracking-widest mb-2">Systems Note</p>
-              <p className="text-brand-text font-bold italic">
-                Automating your compliance workflow is the most effective way to handle the changes discussed in this briefing.
-              </p>
-            </div>
           </div>
 
           <div className="mt-16 pt-12 border-t border-brand-text/5 text-center">

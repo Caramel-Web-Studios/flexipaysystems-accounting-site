@@ -1,4 +1,4 @@
-import { Mail, MapPin, ExternalLink } from 'lucide-react';
+import { Mail, MapPin, ExternalLink, Phone } from 'lucide-react'; 
 import Link from 'next/link';
 
 export default function Footer() {
@@ -20,14 +20,24 @@ export default function Footer() {
         {/* Contact Info - Using Teal #19757e for Icons */}
         <div className="space-y-4">
           <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-primary mb-6">Connect</h4>
+          
           <div className="flex items-start gap-3 text-sm text-white/80">
             <MapPin size={18} className="text-brand-primary shrink-0" />
-            <p>FlexiPay Systems HQ<br />Innovation Way, London, UK</p>
+            <p>4 Wangey Road<br />Chadwell Heath, Romford<br />London, RM6 4DD</p>
           </div>
+
+          {/* ADDED PHONE NUMBER SECTION */}
+          <div className="flex items-center gap-3 text-sm text-white/80">
+            <Phone size={18} className="text-brand-primary" />
+            <a href="tel:+447828693818" className="hover:text-brand-primary transition">
+              +44 7828693818
+            </a>
+          </div>
+
           <div className="flex items-center gap-3 text-sm text-white/80">
             <Mail size={18} className="text-brand-primary" />
-            <a href="mailto:support@flexipaysystems.com" className="hover:text-brand-primary transition">
-              support@flexipaysystems.com
+            <a href="mailto:info@flexipaysystems.com" className="hover:text-brand-primary transition">
+              info@flexipaysystems.com
             </a>
           </div>
         </div>
@@ -37,7 +47,7 @@ export default function Footer() {
           <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-primary mb-6">Operational Hours</h4>
           <ul className="space-y-3 text-sm text-white/70">
             <li className="flex justify-between border-b border-white/5 pb-2">
-              <span>Support (Mon—Fri)</span> <span>8:00 AM - 8:00 PM</span>
+              <span>Mon—Fri</span> <span>10:00 AM - 06:00 PM</span>
             </li>
             <li className="flex justify-between border-b border-white/5 pb-2">
               <span>System Access</span> <span className="text-brand-primary font-bold">24/7/365</span>
@@ -53,7 +63,6 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-widest text-white/30">
         <p>© 2026 FlexiPay Systems Ltd • <Link href="/privacy" className="hover:text-white transition">Privacy & Compliance</Link></p>
         
-        {/* Keep the attribution but update the hover color to your brand teal */}
         <a 
           href="https://caramelwebstudios.com" 
           target="_blank" 

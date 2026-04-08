@@ -12,7 +12,7 @@ export default function Header() {
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'News', href: '/news' },
-    { name: 'Contact Us', href: '/#contact' },
+    { name: 'Contact Us', href: '/contact' },
   ];
 
   // UK Calculator Sub-menu Links

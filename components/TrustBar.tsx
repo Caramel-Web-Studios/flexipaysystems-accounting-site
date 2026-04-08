@@ -6,10 +6,10 @@ export default function TrustBar() {
           Certified Expert in Modern Financial Tools
         </p>
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-20 opacity-40 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-500">
-          <span className="text-2xl font-bold tracking-tighter text-brand-navy underline decoration-brand-gold decoration-4 text-nowrap">QuickBooks</span>
+          
           <span className="text-2xl font-light tracking-widest uppercase text-nowrap">Xero</span>
-          <span className="text-2xl font-black italic text-nowrap">Fresh<span className="text-brand-gold">Books</span></span>
-          <span className="text-2xl font-semibold tracking-tight text-nowrap">GUSTO</span>
+          <span className="text-2xl font-black italic text-nowrap">money<span className="text-brand-gold">soft</span></span>
+          <span className="text-2xl font-semibold tracking-tight text-nowrap">BRIGHTPAY</span>
         </div>
       </div>
     </section>
