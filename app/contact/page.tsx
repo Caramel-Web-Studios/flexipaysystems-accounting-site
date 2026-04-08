@@ -7,7 +7,18 @@ import Cal, { getCalApi } from "@calcom/embed-react";
 
 declare global {
   interface Window {
-    hbspt: unknown;
+    hbspt?: {
+      forms: {
+        create: (options: {
+          region: string;
+          portalId: string;
+          formId: string;
+          target: string;
+          css?: string;
+          cssClass?: string;
+        }) => void;
+      };
+    };
   }
 }
 
