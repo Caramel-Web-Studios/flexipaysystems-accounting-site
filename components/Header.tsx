@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from 'react';
-import { ShieldCheck, ChevronDown, Menu, X, Lock } from 'lucide-react';
+import {  ChevronDown, Menu, X, Lock } from 'lucide-react';
 import Link from 'next/link';
+import Image from "next/image"; 
+
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -11,7 +13,6 @@ export default function Header() {
   // Core Navigation Links
   const navLinks = [
     { name: 'Home', href: '/' },
-    { name: 'News', href: '/news' },
     { name: 'Contact Us', href: '/contact' },
   ];
 
@@ -28,12 +29,30 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
         
         {/* --- LOGO (Replaced Calculator with ShieldCheck for "Systems" feel) --- */}
-        <Link href="/" className="flex items-center gap-2 font-black text-brand-text tracking-tighter text-2xl group">
-          <div className="bg-brand-primary p-1.5 rounded-lg group-hover:bg-brand-text transition-colors">
-            <ShieldCheck className="text-white w-6 h-6" />
-          </div>
-          <span className="text-brand-text uppercase">FlexiPay<span className="text-brand-primary font-light">Systems</span></span>
-        </Link>
+      <Link
+  href="/"
+  className="flex items-center gap-2 group"
+>
+  {/* Logo */}
+  <div className="relative w-14 h-14 md:w-16 md:h-16">
+    <Image
+      src="/logo.png"
+      alt="flexipay systems logo"
+      fill
+      className="object-contain"
+    />
+  </div>
+
+  {/* Text */}
+  <div className="leading-none">
+    <span className="block text-brand-text uppercase font-black text-3xl md:text-4xl tracking-tight">
+      FlexiPay
+    </span>
+    <span className="block text-brand-primary font-light text-sm md:text-base tracking-wide">
+      Systems
+    </span>
+  </div>
+</Link>
 
         {/* --- DESKTOP MENU --- */}
         <div className="hidden md:flex items-center gap-8 text-[11px] font-bold uppercase tracking-[0.2em]">

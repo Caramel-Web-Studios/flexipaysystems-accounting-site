@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header";
 import Footer from "@/components/Footer";
+import AccountingChat from "@/components/AccountingChat";
 import ClientWrapper from "../components/ClientWrapper"; // Import the wrapper
 import { Metadata } from "next";
 
@@ -22,8 +23,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Wrap children in the client-side animation component */}
         <ClientWrapper>
           {children}
+          {/* This renders the floating chat bubble on every page */}
+       
         </ClientWrapper>
         <Footer />
+         <AccountingChat />
       </body>
     </html>
   );
