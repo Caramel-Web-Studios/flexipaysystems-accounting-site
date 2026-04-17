@@ -9,7 +9,9 @@ interface Message {
 
 export default function AccountingChat() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+  { role: "assistant", content: "Hi! I'm your FlexiPay UK expert. Ask me about VAT, PAYE, or Self-Assessment." }
+]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);

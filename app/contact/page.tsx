@@ -1,10 +1,15 @@
 "use client";
-import { useEffect } from "react";
+
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, Calendar, Clock, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 import Cal, { getCalApi } from "@calcom/embed-react";
 
+// Import your refined animations
+import { slideIn, fadeUp, staggerContainer } from "@/lib/animations";
+
+// --- Types & Helpers ---
 declare global {
   interface Window {
     hbspt?: {
@@ -22,9 +27,22 @@ declare global {
   }
 }
 
+// Modern helper to detect client-side rendering without triggering ESLint warnings
+function useIsClient() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+}
+
 export default function ContactPage() {
+  const isMounted = useIsClient();
+  const formInitialized = useRef(false);
+
   useEffect(() => {
-    (async function () {
+    // 1. Initialize Cal.com API
+    (async function initCal() {
       const cal = await getCalApi({ namespace: "website-consultation" });
       cal("ui", {
         theme: "light",
@@ -34,6 +52,7 @@ export default function ContactPage() {
       });
     })();
 
+    // 2. Load and Initialize HubSpot Form
     const script = document.createElement("script");
     script.src = "https://js-eu1.hsforms.net/forms/embed/v2.js";
     script.async = true;
@@ -41,47 +60,58 @@ export default function ContactPage() {
     document.head.appendChild(script);
 
     script.onload = () => {
-      if (window.hbspt && window.hbspt.forms) {
-        window.hbspt.forms.create({
-          region: "eu1",
-          portalId: "148029377",
-          formId: "15e148d2-417a-4481-b45c-d15533c1c205",
-          target: "#hubspot-form-container",
-          css: "",
-          cssClass: "flexipay-custom-form"
-        });
+      if (window.hbspt && window.hbspt.forms && !formInitialized.current) {
+        const container = document.querySelector("#hubspot-form-container");
+        if (container) {
+          container.innerHTML = ""; // Prevents form duplication
+          window.hbspt.forms.create({
+            region: "eu1",
+            portalId: "148029377",
+            formId: "15e148d2-417a-4481-b45c-d15533c1c205",
+            target: "#hubspot-form-container",
+            css: "",
+            cssClass: "flexipay-custom-form",
+          });
+          formInitialized.current = true;
+        }
+      }
+    };
+
+    return () => {
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
       }
     };
   }, []);
 
   return (
-    <main className="bg-brand-surface min-h-screen pb-20 overflow-hidden">
-      
-      {/* 1. HEADER WRAPPER WITH BACKGROUND IMAGE */}
+    <motion.main
+      variants={staggerContainer}
+      initial="hidden"
+      animate="show"
+      className="bg-brand-surface min-h-screen pb-20 overflow-hidden"
+    >
+      {/* --- HEADER SECTION --- */}
       <section className="relative pt-32 pb-24 z-20 overflow-hidden">
-        {/* The Background Image - Limited to this section only */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <Image
-            src="/planner.jpg" 
+            src="/planner.jpg"
             alt="planner"
             fill
             priority
-            className="object-cover object-center opacity-30 mix-blend-luminosity" 
+            className="object-cover object-center opacity-30 mix-blend-luminosity"
           />
-          {/* Gradient that fades out at the bottom of the header */}
-          <div 
-            className="absolute inset-0" 
-            style={{ 
-             background: "linear-gradient(to bottom, transparent 0%, #f8fafb 100%)"
-            }} 
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(to bottom, transparent 0%, #f8fafb 100%)",
+            }}
           />
         </div>
 
-        {/* HEADER CONTENT */}
         <div className="relative z-10 max-w-5xl mx-auto text-center px-6">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            variants={fadeUp(0.1)}
             className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/50 backdrop-blur-md border border-brand-primary/20 shadow-sm mb-10"
           >
             <span className="relative flex h-2 w-2">
@@ -89,7 +119,7 @@ export default function ContactPage() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-primary"></span>
             </span>
             <span className="text-brand-primary font-black uppercase tracking-[0.4em] text-[9px]">
-              Engagement Portal 
+              Engagement Portal
             </span>
           </motion.div>
 
@@ -97,10 +127,8 @@ export default function ContactPage() {
             <span className="absolute -top-12 left-1/2 -translate-x-1/2 text-[140px] font-black text-brand-text/5 select-none tracking-tighter uppercase whitespace-nowrap">
               Contact
             </span>
-            <motion.h1 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            <motion.h1
+              variants={slideIn("left", 0.2)}
               className="relative text-7xl md:text-9xl font-black text-brand-text leading-[0.8] tracking-[-0.05em] uppercase"
             >
               Strategic <br />
@@ -110,114 +138,128 @@ export default function ContactPage() {
             </motion.h1>
           </div>
 
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
+          <motion.p
+            variants={fadeUp(0.4)}
             className="mt-10 text-brand-text/60 font-medium text-base md:text-lg max-w-xl mx-auto leading-relaxed"
           >
-            Connect with our team to streamline your operations <br className="hidden md:block" /> 
+            Connect with our team to streamline your operations <br className="hidden md:block" />
             and deploy automated payroll at scale.
           </motion.p>
         </div>
       </section>
 
-      {/* 2. GRID AND CARDS SECTION (CLEAN BACKGROUND) */}
+      {/* --- INTERACTIVE GRID SECTION --- */}
       <div className="max-w-7xl mx-auto px-6 relative z-10 pt-12">
-        
-        {/* TOP ROW: 60/40 SPLIT GRID */}
         <div className="grid lg:grid-cols-12 gap-8 items-stretch mb-8">
           
-          {/* CAL.COM SCHEDULER (60%) */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+          {/* LEFT: CAL.COM SCHEDULER */}
+          <motion.div
+            variants={slideIn("left", 0.5)}
             className="lg:col-span-7 bg-white p-10 rounded-[2.5rem] shadow-2xl shadow-brand-text/5 border border-brand-text/5 flex flex-col"
           >
             <h3 className="text-[11px] font-black uppercase tracking-widest text-brand-text mb-8 border-b border-brand-text/5 pb-4 flex items-center gap-2">
               <Calendar size={14} className="text-brand-primary" />
               Schedule Briefing
             </h3>
-            
+
             <div className="grid lg:grid-cols-3 gap-10 grow">
               <div className="lg:col-span-1 space-y-8">
                 <div>
                   <div className="flex items-center gap-2 mb-3">
                     <Clock size={14} className="text-brand-primary" />
-                    <p className="text-brand-primary font-black uppercase tracking-widest text-[9px]">Duration</p>
+                    <p className="text-brand-primary font-black uppercase tracking-widest text-[9px]">
+                      Duration
+                    </p>
                   </div>
                   <p className="text-sm font-bold text-brand-text">30 Minute Session</p>
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     <CheckCircle2 size={14} className="text-brand-primary" />
-                    <p className="text-brand-primary font-black uppercase tracking-widest text-[9px]">Focus</p>
+                    <p className="text-brand-primary font-black uppercase tracking-widest text-[9px]">
+                      Focus
+                    </p>
                   </div>
                   <ul className="space-y-3">
-                    {['Workflow Automation', 'System Integration', 'UK Compliance'].map((item) => (
-                      <li key={item} className="flex items-center gap-2 text-[11px] font-bold text-brand-text/70 uppercase tracking-tight">
-                        <span className="w-1 h-1 rounded-full bg-brand-primary" />
-                        {item}
-                      </li>
-                    ))}
+                    {["Workflow Automation", "System Integration", "UK Compliance"].map(
+                      (item) => (
+                        <li
+                          key={item}
+                          className="flex items-center gap-2 text-[11px] font-bold text-brand-text/70 uppercase tracking-tight"
+                        >
+                          <span className="w-1 h-1 rounded-full bg-brand-primary" />
+                          {item}
+                        </li>
+                      )
+                    )}
                   </ul>
                 </div>
               </div>
-              <div className="lg:col-span-2 bg-brand-surface/40 rounded-3xl overflow-hidden border border-brand-text/5 p-1">
-                <Cal 
-                  namespace="website-consultation"
-                  calLink="caramelwebstudios/website-consultation"
-                  style={{ width: "100%", height: "100%", minHeight: "550px" }}
-                  config={{ layout: "month_view", theme: "light", useSlotsViewOnSmallScreen: "true" }}
-                />
+              <div className="lg:col-span-2 bg-brand-surface/40 rounded-3xl overflow-hidden border border-brand-text/5 p-1 min-h-137.5">
+                {isMounted && (
+                  <Cal
+                    namespace="website-consultation"
+                    calLink="caramelwebstudios/website-consultation"
+                    style={{ width: "100%", height: "100%" }}
+                    config={{
+                      layout: "month_view",
+                      theme: "light",
+                      useSlotsViewOnSmallScreen: "true",
+                    }}
+                  />
+                )}
               </div>
             </div>
           </motion.div>
 
-          {/* HUBSPOT FORM CARD (40%) */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+          {/* RIGHT: HUBSPOT FORM */}
+          <motion.div
+            variants={slideIn("right", 0.5)}
             className="lg:col-span-5 bg-white p-10 rounded-[2.5rem] border border-brand-text/5 shadow-2xl shadow-brand-text/5 flex flex-col"
           >
             <h3 className="text-[11px] font-black uppercase tracking-widest text-brand-text mb-8 border-b border-brand-text/5 pb-4 flex items-center gap-2">
               <Mail size={14} className="text-brand-primary" />
               General Inquiry
             </h3>
-            <div id="hubspot-form-container" className="w-full grow" />
+            {isMounted ? (
+              <div id="hubspot-form-container" className="w-full grow" />
+            ) : (
+              <div className="w-full h-96 animate-pulse bg-brand-surface rounded-3xl" />
+            )}
           </motion.div>
         </div>
 
-        {/* BOTTOM ROW: CONTACT CARDS */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+        {/* --- BOTTOM ROW: CONTACT CARDS --- */}
+        <motion.div
+          variants={fadeUp(0.7)}
           className="flex flex-col md:flex-row gap-6 w-full"
         >
-          <div className="flex items-center gap-6 p-8 rounded-4xl bg-brand-text text-white shadow-xl group flex-1 transition-all hover:-translate-y-1">
+          <div className="flex items-center gap-6 p-8 rounded-[2.5rem] bg-brand-text text-white shadow-xl group flex-1 transition-all hover:-translate-y-1">
             <div className="bg-brand-primary/20 p-4 rounded-2xl text-brand-primary group-hover:scale-110 transition-transform duration-300">
               <Phone size={24} />
             </div>
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 mb-1">Direct Correspondence</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 mb-1">
+                Direct Correspondence
+              </p>
               <p className="text-xl md:text-2xl font-bold tracking-tight">+44 7828 693 818</p>
             </div>
           </div>
-          <div className="flex items-center gap-6 p-8 rounded-4xl bg-white border border-brand-text/5 shadow-sm group flex-1 transition-all hover:-translate-y-1">
+          <div className="flex items-center gap-6 p-8 rounded-[2.5rem] bg-white border border-brand-text/5 shadow-sm group flex-1 transition-all hover:-translate-y-1">
             <div className="bg-brand-primary/10 p-4 rounded-2xl text-brand-primary group-hover:scale-110 transition-transform duration-300">
               <Mail size={24} />
             </div>
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-text/40 mb-1">Electronic Mail</p>
-              <p className="text-xl md:text-2xl font-bold text-brand-text lowercase tracking-tight">info@flexipaysystems.com</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-text/40 mb-1">
+                Electronic Mail
+              </p>
+              <p className="text-xl md:text-2xl font-bold text-brand-text lowercase tracking-tight">
+                info@flexipaysystems.com
+              </p>
             </div>
           </div>
         </motion.div>
-
       </div>
-    </main>
+    </motion.main>
   );
 }

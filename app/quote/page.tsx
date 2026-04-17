@@ -15,7 +15,7 @@ export default function QuotePage() {
         <div className="space-y-6">
           {/* Cleaned up: text-brand-text */}
           <h1 className="text-4xl md:text-5xl font-extrabold text-brand-text tracking-tight leading-tight">
-            Ready to scale your <span className="text-brand-primary">finances?</span>
+            Get a Tailored Quote for <span className="text-brand-primary">Your Business</span>
           </h1>
           
           <p className="text-lg text-brand-muted leading-relaxed font-medium">
