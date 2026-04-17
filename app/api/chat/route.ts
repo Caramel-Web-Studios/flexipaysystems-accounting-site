@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Define the structure strictly
 interface ChatMessage {
   role: "user" | "assistant" | "system";
   content: string;
@@ -9,13 +8,10 @@ interface ChatMessage {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    
     if (!body.messages || !Array.isArray(body.messages)) {
       return NextResponse.json({ error: "No messages provided" }, { status: 400 });
     }
 
-    // FIX: Instead of (msg: any), we use (msg: ChatMessage)
-    // This removes the ESLint error and ensures data integrity
     const clientMessages: ChatMessage[] = body.messages.map((msg: ChatMessage) => ({
       role: msg.role === "assistant" ? "assistant" : "user",
       content: msg.content || "",
@@ -27,8 +23,8 @@ export async function POST(req: NextRequest) {
       - Advice must strictly follow UK tax laws (HMRC/Companies House).
       - Topics: VAT, PAYE, Corporation Tax, National Insurance, Self-Assessment.
       - Use British English (e.g., 'organisation', 'optimisation').
-      - Refer to the UK tax year (6 April to 5 April).
-      - Disclaimer REQUIRED at the end of every response: "\n\nNote: This is general information and does not constitute formal tax advice."`
+      - If a user wants to book a call, consultation, or meeting, provide the trigger: [BOOK_SESSION].
+      - ALWAYS include this disclaimer at the end: "\n\nNote: This is general information and does not constitute formal tax advice."`
     };
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -46,20 +42,12 @@ export async function POST(req: NextRequest) {
     });
 
     const data = await response.json();
+    if (!response.ok) return NextResponse.json({ error: data.error?.message }, { status: response.status });
 
-    if (!response.ok) {
-      console.error("OpenAI Error Details:", data.error);
-      return NextResponse.json(
-        { error: data.error?.message || "OpenAI API failed" }, 
-        { status: response.status }
-      );
-    }
-
-    const reply = data.choices[0].message.content;
-    return NextResponse.json({ reply });
-
+    return NextResponse.json({ reply: data.choices[0].message.content });
   } catch (error) {
-    console.error("Critical Server Error:", error);
+    // FIX: Logging the error to the console uses the variable and clears the ESLint warning
+    console.error("Chat API Error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
