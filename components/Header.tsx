@@ -94,7 +94,7 @@ export default function Header() {
           
           {/* CLIENT LOGIN BUTTON (Navy #003366 background, Teal hover) */}
           <Link 
-            href="https://portal.flexipaysystems.com" 
+            href="https://login.xero.com/identity/user/login" 
             target="_blank"
             className="flex items-center gap-2 bg-brand-text text-white px-6 py-3 rounded-full hover:bg-brand-primary transition-all duration-300 shadow-lg shadow-brand-text/10 hover:-translate-y-0.5"
           >
