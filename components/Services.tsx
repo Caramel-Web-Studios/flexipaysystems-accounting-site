@@ -41,7 +41,7 @@ function ServiceCard({ icon, title, desc, delay }: { icon: React.ReactNode, titl
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay }}
       whileHover={{ y: -12, transition: { duration: 0.2 } }}
-      className="p-10 rounded-4xl border border-brand-navy/5 bg-white hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] transition-all group"
+      className="p-10 rounded-4xl  bg-white hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] transition-all group"
     >
       <div className="text-brand-gold mb-8 group-hover:scale-110 transition-transform duration-500">{icon}</div>
       <h3 className="text-2xl font-black mb-4 text-brand-navy">{title}</h3>

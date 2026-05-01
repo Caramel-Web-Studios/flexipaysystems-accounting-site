@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
 import Image from "next/image"; 
 import Link from "next/link";
-// Import your animation variants
 import { slideIn, fadeUp, staggerContainer } from "@/lib/animations";
 
 export default function Hero() {

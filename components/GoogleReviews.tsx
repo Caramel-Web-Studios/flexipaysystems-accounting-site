@@ -42,10 +42,10 @@ export default function GoogleReviews() {
   return (
     <section className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+        <div className="flex flex-col md:flex-row justify-center items-center mb-16 gap-6">
           <div>
             <h2 className="text-4xl font-black text-brand-text tracking-tighter mb-4 uppercase">
-              Trusted by UK <br/> Founders
+              Trusted by UK Founders
             </h2>
             <div className="flex items-center gap-2">
               <div className="flex text-brand-primary">

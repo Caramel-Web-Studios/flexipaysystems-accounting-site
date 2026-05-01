@@ -13,11 +13,11 @@ interface AccreditationsProps {
 
 export default function Accreditations({ logos }: AccreditationsProps) {
   return (
-    <section className="border-y border-brand-navy/5 bg-white py-16">
+    <section className=" bg-white py-16">
       
       <div className="max-w-7xl mx-auto px-6">
         
-        <p className="text-center text-xs font-bold text-brand-slate uppercase tracking-[0.2em] mb-12">
+        <p className="text-center text-xl font-bold text-brand-slate uppercase tracking-[0.2em] mb-12">
           Our Credentials
         </p>
 
@@ -40,8 +40,6 @@ export default function Accreditations({ logos }: AccreditationsProps) {
                 height={64}
                 className="
                   object-contain 
-                  grayscale 
-                  opacity-70 
                   hover:opacity-100 
                   transition-all 
                   duration-500
